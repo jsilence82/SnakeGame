@@ -1,4 +1,5 @@
 # Classic snake video game using pygame.
+
 import pygame
 from random import randrange
 
@@ -22,12 +23,18 @@ clock = pygame.time.Clock()
 # Game fonts
 font_style = pygame.font.SysFont("Helvetica", 18)
 score_font = pygame.font.SysFont("Helvetica", 20)
+nom_font = pygame.font.SysFont("Helvetica", 12)
 
 
 # Score rendering during the game
-def user_score(score):
-    value = score_font.render("Score: " + str(score), True, black)
+def user_score(score, snake_speed):
+    value = score_font.render("Score: " + str((score * 10) * (snake_speed - 7)), True, black)
     display.blit(value, [0, 0])
+
+
+def speed_show(snake_speed):
+    speed = score_font.render("Speed: " + str(snake_speed - 6), True, black)
+    display.blit(speed, [300, 0])
 
 
 # Defines block size of the snake and adds on to the length after food is eaten.
@@ -74,7 +81,9 @@ def game_loop():
 
         while game_close:  # End game screen message and key presses to re-start or quit
             display.fill(white)
-            message("Game Over! Your score: {}".format(length_of_snake - 1), "N: New Game or Q: Quit", black)
+            message("Game Over! Your score: {}"
+                    .format(str(((length_of_snake - 1) * 10) * (snake_speed - 7))),
+                    "N: New Game or Q: Quit", black)
             pygame.display.update()
 
             for event in pygame.event.get():
@@ -122,12 +131,19 @@ def game_loop():
                 game_close = True
 
         snake(snake_block, snake_list)
-        user_score(length_of_snake - 1)
+        user_score(length_of_snake - 1, snake_speed)
+        speed_show(snake_speed)
 
         pygame.display.update()
 
-        # If food is eaten, randomly place new piece of food, increase length of snake and its speed
+        # If food is eaten, randomly place new piece of food, increase length of snake and its speed. Snake also says
+        # 'nom-nom'
         if snake_x == food_x and snake_y == food_y:
+            nom_display = nom_font.render("nom nom", True, black)
+            display.blit(nom_display, [snake_x + 5, snake_y + 5])
+            pygame.display.flip()
+            pygame.event.pump()
+            pygame.time.delay(30)
             food_x = place_food(snake_block)[0]
             food_y = place_food(snake_block)[1]
             length_of_snake += 1
