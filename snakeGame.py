@@ -58,6 +58,16 @@ def place_food(snake_block):
     return food_x, food_y
 
 
+# Nom-nom animation if snake eats food
+def nom_nom(nom, snake_x, snake_y):
+    if nom:
+        nom_display = nom_font.render("nom nom", True, black)
+        display.blit(nom_display, [snake_x + 5, snake_y + 5])
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(30)
+
+
 def game_loop():
     game_running = True
     game_close = False
@@ -139,11 +149,8 @@ def game_loop():
         # If food is eaten, randomly place new piece of food, increase length of snake and its speed. Snake also says
         # 'nom-nom'
         if snake_x == food_x and snake_y == food_y:
-            nom_display = nom_font.render("nom nom", True, black)
-            display.blit(nom_display, [snake_x + 5, snake_y + 5])
-            pygame.display.flip()
-            pygame.event.pump()
-            pygame.time.delay(30)
+            nom = True
+            nom_nom(nom, snake_x, snake_y)
             food_x = place_food(snake_block)[0]
             food_y = place_food(snake_block)[1]
             length_of_snake += 1
