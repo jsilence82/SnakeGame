@@ -1,7 +1,7 @@
 # SnakeGame
 Snake Game written in pygame
 
-Game of Snake written in Python with pygame. Done with help from tutorials and from Stack Overflow.
+Game of Snake written in Python with pygame. Done with help from a tutorial from Edureka and from Stack Overflow.
 
 Future improvements:
 
