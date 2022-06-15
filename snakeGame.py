@@ -51,9 +51,8 @@ def place_food(snake_block):
     return food_x, food_y
 
 
-# Game loop. While loop while game is running. Ends on snake or border collision.
 def game_loop():
-    game_over = False
+    game_running = True
     game_close = False
 
     # Setting initial snake_head in the middle of the screen. Length of snake is 1 and
@@ -71,25 +70,25 @@ def game_loop():
     food_x = place_food(snake_block)[0]
     food_y = place_food(snake_block)[1]
 
-    while not game_over:
+    while game_running:
 
         while game_close:  # End game screen message and key presses to re-start or quit
             display.fill(white)
-            message("Game Over! Your score: {}".format(length_of_snake - 1), "N: New Game or Q:Quit", black)
+            message("Game Over! Your score: {}".format(length_of_snake - 1), "N: New Game or Q: Quit", black)
             pygame.display.update()
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:
-                        game_over = True
+                        game_running = False
                         game_close = False
                     if event.key == pygame.K_n:
                         game_loop()
 
-        # Assigning key presses for in game.
+        # Assigning key presses for in game. Using arrow keys for movement.
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_over = True
+                game_running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     x_change = -snake_block
